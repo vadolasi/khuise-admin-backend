@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% block title %}Produtos{% endblock %}
+{% load static %}
+
+{% block content %}
+<br>
+<br>
+<!--Cabeçalio-->
+<div class="row">
+    <div class="col-sm">
+        <h1>Lista De Produtos</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm">
+        <a href="novoproduto/" style="text-decoration: none;" class="btn btn-success"><i class="fas fa-plus"></i> Adicionar Produto</a>
+    </div>
+    <div class="col-sm text-right">
+        <form method="GET" id="search-form">
+            <input type="text" class="form-control" value="{{request.GET.search}}" name="search" placeholder="Procure por um produto">
+            <i class="fas fa-search" id="search-btn"></i>
+        </form>
+    </div>
+</div>
+
+<br>
+<br>
+
+<!--Messages-->
+
+{% if messages %}
+
+<ul class="messages">
+
+    {% for message in messages %}
+    <li {% if message.tags %} class="alert alert-{{message.tags}}" {% endif %} >{{message}}</li>
+    {% endfor %}
+
+</ul>
+
+{% endif %}
+
+<br>
+<br>
+
+<!--Lista De Produtos-->
+<div class="row">
+
+    {% for produto in produtos %}
+    <div class="col-sm-3">
+        <a href="/produto/{{produto.id}}" style="text-decoration: none; color: black;">
+            <div class="card">
+                <img class="card-img-top" src="{{ produto.imagem }}" alt="Imagem do produto">
+                <div class="card-body">
+                    <h5 class="card-title">{{produto.nome}}</h5>
+                    <p class="card-text">R${{produto.preço}}</p>
+                    <a href="editarproduto/{{produto.id}}" class="btn btn-primary">Editar</a>
+                    <a href="deletarproduto/{{produto.id}}" class="btn btn-danger">Excluir</a>
+                </div>
+            </div>
+        </a>
+        <br>
+    </div>
+    
+    {% endfor %}
+
+</div>
+
+<!--Paginator-->
+
+<div class="row">
+    <div class="col-sm">
+        <div class="pagination" >
+
+            <span class="step-links">
+
+                {% if produtos.has_previous %}
+                <a href="?page={{ produtos.previous_page_number }}"><i class="fas fa-arrow-left"></i></a>
+                {% endif %}
+
+                {% if produtos.paginator.num_pages %}
+                <span class="current">
+
+                    {{produtos.number}} de {{produtos.paginator.num_pages}}
+
+                </span>
+                {% endif %}
+
+                {% if produtos.has_next %}
+                <a href="?page={{ produtos.next_page_number }}"><i class="fas fa-arrow-right"></i></a>
+                {% endif %}
+
+            </span>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
