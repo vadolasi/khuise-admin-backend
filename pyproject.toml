@@ -1,0 +1,45 @@
+[tool.poetry]
+name = "khuise-admin"
+version = "0.1.0"
+description = ""
+authors = ["Vitor Daniel <vitor036daniel@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+Django = {extras = ["argon2"], version = "^3.1.5"}
+django-crispy-forms = "^1.10.0"
+django-environ = "^0.4.5"
+django-filter = "^2.4.0"
+psycopg2 = "^2.8.6"
+django-cors-headers = "^3.6.0"
+django-heroku = "^0.3.1"
+celery = "^5.0.5"
+django-mjml = "^0.10.2"
+django-graphql-extensions = "^0.0.7"
+Pillow = "^8.1.0"
+gunicorn = "^20.0.4"
+pypugjs = "^5.9.8"
+
+[tool.poetry.dev-dependencies]
+django-extensions = "^3.1.0"
+commitizen = "^2.13.0"
+django-debug-toolbar = "^3.2"
+Werkzeug = "^1.0.1"
+isort = "^5.7.0"
+pyformat = "^0.7"
+add-trailing-comma = "^2.0.2"
+safety = "^1.10.3"
+
+[tool.isort]
+include_trailing_comma = true
+use_parentheses = true
+multi_line_output = "3"
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+version = "0.0.1"
+tag_format = "$version"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

@@ -1,0 +1,29 @@
+{% extends "base.pug" %}
+{% block title %}Login{% endblock %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block content %}
+br
+br
+br
+br
+br
+br
+br
+br
+br
+br
+div.row
+    div.col-sm-4.offset-sm-4
+        div.card.auth-card
+            div.card-body
+                div.card-title.text-center
+                    img(style="width: 150px; height: 120px;" src="{% static 'imgs/logo1.png' %}")
+                form(method="POST")
+                    {% csrf_token %}
+                    input(type="hidden" name="next" value="{{ next }}")
+                    {{ form|crispy }}
+                    button.btn.btn-primary.btn-block(type="submit") Entrar
+                    br
+{% endblock %}

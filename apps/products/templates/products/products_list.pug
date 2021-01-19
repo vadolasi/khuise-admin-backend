@@ -1,0 +1,77 @@
+{% extends "base.pug" %}
+{% block title %}produtos{% endblock %}
+{% load static %}
+
+{% block content %}
+br
+br
+
+div.row
+    div.col-sm
+        h1 Lista De produtos
+
+div.row
+    div.col-sm
+        a.btn.btn-success(href="{% url 'product-create' %}" style="text-decoration: none;")
+            i.fas.fa-plus
+            | Adicionar produto
+    div.col-sm.text-right
+        form#search-form(method="GET")
+            input.form-control(type="text" value="{{ request.GET.search }}" name="search" placeholder="Procure por um produto")
+            i.fas.fa-search#search-btn
+
+br
+br
+
+<!--Messages-->
+
+{% if messages %}
+
+ul.messages
+
+    {% for message in messages %}
+    li({% if message.tags %} class="alert alert-{{ message.tags }}" {% endif %}) {{ message }}
+    {% endfor %}
+
+{% endif %}
+
+br
+br
+
+<!--Lista De produtos-->
+div.row
+
+    {% for product in products %}
+    div.col-sm-3
+        a(href="{% url "product-detail" id=product.id %}" style="text-decoration: none; color: black;")
+            div.card
+                img.card-img-top(src="{{ product.imagem }}" alt="Imagem do produto")
+                div.card-body
+                    h5.card-title {{ product.name }}
+                    p.card-text R${{ product.price }}
+                    a.btn.btn-primary(href="{% url "product-update" id=product.id %}") Editar
+                    a.btn.btn-danger(href="{% url "product-delete" id=product.id %}") Excluir
+    {% endfor %}
+
+div.row
+    div.col-sm
+        div.pagination
+
+            span.step-links
+
+                {% if products.has_previous %}
+                a(href="?page={{ products.previous_page_number }}")
+                    i.fas.fa-arrow-left
+                {% endif %}
+
+                {% if products.paginator.num_pages %}
+                span.current
+                    {{ products.number }} de {{ products.paginator.num_pages }}
+                {% endif %}
+
+                {% if products.has_next %}
+                a(href="?page={{ products.next_page_number }}")
+                    i.fas.fa-arrow-right"
+                {% endif %}
+
+{% endblock %}
