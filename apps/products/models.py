@@ -7,9 +7,6 @@ class Product(models.Model):
     price = models.FloatField('preço')
     description = models.TextField('descrição')
 
-    images = ArrayField(models.ImageField(), verbose_name='imagens')
-
-    stock = models.JSONField()
     categories = ArrayField(
         models.CharField(
             max_length=255,
@@ -21,3 +18,25 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class ProductImage(models.Model):
+    product = models.ForeignKey(
+        'Product',
+        on_delete=models.CASCADE,
+        verbose_name='produto',
+        related_name='images'
+    )
+    image = models.ImageField()
+
+
+class ProductStock(models.Model):
+    product = models.ForeignKey(
+        'Product',
+        on_delete=models.CASCADE,
+        verbose_name='produto',
+        related_name='stocks'
+    )
+    color = models.CharField('cor', max_length=30)
+    size = models.CharField('tamanho', max_length=2)
+    stock = models.IntegerField('estoque')

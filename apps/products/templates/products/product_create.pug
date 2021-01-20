@@ -13,40 +13,7 @@ div.row.text-center
 
 div.row
 
-    form(method="POST" enctype="multipart/form-data")
-
-        section#other_inputs
-
-            {% csrf_token %}
-
-            {{ form|crispy }}
-
-        div.row(style="background-color: rgb(231, 255, 255); border-radius: 8px; padding: 5px;")
-
-            div.col-sm.text-left.mt-auto
-                label Tamanhos
-
-            div.col-sm.text-right
-                i.fas.fa-plus.btn.btn-primary(onclick="addTamanho()")
-
-        br
-
-        section#container_tamanhos
-
-            div.row
-                div.col-sm
-                    label.requiredField(for="tamanhos") Tamanho
-                    input.text-uppercase.form-control(maxlength="4" required type="text" name="tamanho")
-                di.col-sm
-                    label.requiredField(for="tamanhos") Quantidade
-                    input.form-control(required type="number" name="quantidade")
-                div.col-sm
-                    label.requiredField(for="tamanhos") Cor
-                    input.text-capitalize.form-control(required type="text" name="cor")
-
-        br
-
-        input.btn.btn-success(type="submit" value="Adicionar")
+    {% crispy form %}
 
 div#inputs_tamanho(style="display: none;")
     div.row

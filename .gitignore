@@ -10,6 +10,10 @@ __pycache__/
 # Media files
 media/
 
+# doit cache
+.doit.db.dat
+.doit.db.dir
+.doit.db.bak
+
 # NPM dependencies
 node_modules/
-
