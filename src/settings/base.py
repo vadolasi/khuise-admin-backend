@@ -10,6 +10,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 import os
+import platform
 from io import StringIO
 from pathlib import Path
 
@@ -183,3 +184,9 @@ task_queues = (
         routing_key='video',
     )
 )
+
+
+if platform.system() == "Linux":
+    MJML_EXEC_CMD = str(BASE_DIR / 'node_modules' / '.bin' / 'mjml')
+else: 
+    MJML_EXEC_CMD = str(BASE_DIR / 'node_modules' / '.bin' / 'mjml.cmd')
