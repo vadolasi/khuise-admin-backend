@@ -1,77 +1,102 @@
 {% extends "base.pug" %}
 {% block title %}produtos{% endblock %}
 {% load static %}
+{% load crispy_forms_tags %}
 
 {% block content %}
 br
 br
 
-div.row
-    div.col-sm
-        h1 Lista De produtos
 
-div.row
-    div.col-sm
-        a.btn.btn-success(href="{% url 'product-create' %}" style="text-decoration: none;")
-            i.fas.fa-plus
-            | Adicionar produto
-    div.col-sm.text-right
-        form#search-form(method="GET")
-            input.form-control(type="text" value="{{ request.GET.search }}" name="search" placeholder="Procure por um produto")
-            i.fas.fa-search#search-btn
 
-br
-br
 
-<!--Messages-->
+div#id_name__icontains.form-group.text-left(style="width: 10%; position: fixed; left: 3%;")
+    form(action='' method='get')
+            .row
+                h3 Pesquisar... 
+                i.fas.fa-search.text-right(style="cursor: auto")
 
-{% if messages %}
+            br
 
-ul.messages
+            .row
+                label(for="id_name__icontains") Nome
+                input#id_name__icontains.textinput.textInput.form-control(type='text' name='name__icontains')
 
-    {% for message in messages %}
-    li({% if message.tags %} class="alert alert-{{ message.tags }}" {% endif %}) {{ message }}
-    {% endfor %}
+            .row
+                label(for="id_price__lt") Preço Menor Que
+                input#id_price__lt.numberinput.form-control(type='number' name='price__lt' step='any')
 
-{% endif %}
+            .row
+                label(for="id_price__gt") Preço Maior Que
+                input#id_price__gt.numberinput.form-control(type='number' name='price__gt' step='any')
 
-br
-br
+            .row
+                label(for="id_categories") Categoria
+                input#id_categories.textinput.textInput.form-control(type='text' name='categories')
 
-<!--Lista De produtos-->
-div.row
+            br
 
-    {% for product in products %}
-    div.col-sm-3
-        a(href="{% url "product-detail" id=product.id %}" style="text-decoration: none; color: black;")
-            div.card
-                img.card-img-top(src="{{ product.imagem }}" alt="Imagem do produto")
-                div.card-body
-                    h5.card-title {{ product.name }}
-                    p.card-text R${{ product.price }}
-                    a.btn.btn-primary(href="{% url "product-update" id=product.id %}") Editar
-                    a.btn.btn-danger(href="{% url "product-delete" id=product.id %}") Excluir
-    {% endfor %}
+            .row
+                input.btn.btn-info(type='submit' value="Buscar")
 
-div.row
-    div.col-sm
-        div.pagination
+div(style="padding-left: 10%; padding-right: 10%;")
 
-            span.step-links
+    div.row
+        div.col-sm
+            h1 Lista De produtos
 
-                {% if products.has_previous %}
-                a(href="?page={{ products.previous_page_number }}")
-                    i.fas.fa-arrow-left
-                {% endif %}
+    a.btn.btn-primary(href="{% url 'product-create'%}") Adicionar
 
-                {% if products.paginator.num_pages %}
-                span.current
-                    {{ products.number }} de {{ products.paginator.num_pages }}
-                {% endif %}
+    br
+    br
 
-                {% if products.has_next %}
-                a(href="?page={{ products.next_page_number }}")
-                    i.fas.fa-arrow-right"
-                {% endif %}
+    <!--Messages-->
+
+    {% if messages %}
+
+    ul.messages
+
+        {% for message in messages %}
+        li({% if message.tags %} class="alert alert-{{ message.tags }}" {% endif %}) {{ message }}
+        {% endfor %}
+
+    {% endif %}
+
+    br
+    br
+
+
+
+    <!--Lista De produtos-->
+    div.row#infinite-container
+
+        {% for product in filter.qs %}
+        div.col-sm-3
+            a(href="{% url 'product-detail' pk=product.id %}" style="text-decoration: none; color: black;")
+                div.card
+                    img.card-img-top(src="{{ product.imagem }}" alt="Imagem do produto")
+                    div.card-body
+                        h5.card-title {{ product.name }}
+                        p.card-text R${{ product.price }}
+                        a.btn.btn-primary(href="{% url 'product-update' pk=product.id %}" style="margin-right: 5px;") Editar
+                        a.btn.btn-danger(href="{% url 'product-delete' pk=product.id %}") Excluir
+
+            br
+        {% endfor %}
+        div.loading#loading(style="display: none;") Loading...
+        {% if page_obj.has_next %}
+        a.infinite-more-link(href="?page={{ products.next_page_number }}") Mais
+        {% endif %}
+
+script.
+    var infinite = new Waypoint.Infinite({
+        element: $("#infinite-container")[0],
+        onBeforePageLoad: function () {
+            $("#loading").show();
+        },
+        onAfterPageLoad: function ($items) {
+            $("#loading").hide();
+        }
+    });
 
 {% endblock %}

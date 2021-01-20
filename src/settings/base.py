@@ -188,5 +188,6 @@ task_queues = (
 
 if platform.system() == "Linux":
     MJML_EXEC_CMD = str(BASE_DIR / 'node_modules' / '.bin' / 'mjml')
-else: 
+
+else:
     MJML_EXEC_CMD = str(BASE_DIR / 'node_modules' / '.bin' / 'mjml.cmd')

@@ -18,8 +18,7 @@ div.row
 
         {% csrf_token %}
 
-        {{ form|crispy }}
+        {% crispy form %}
 
-        input.btn.btn-success(type="submit" value="Salvar")
 
 {% endblock %}

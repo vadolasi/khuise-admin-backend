@@ -29,6 +29,7 @@ isort = "^5.7.0"
 pyformat = "^0.7"
 add-trailing-comma = "^2.0.2"
 safety = "^1.10.3"
+doit = "^0.33.1"
 
 [tool.isort]
 include_trailing_comma = true
