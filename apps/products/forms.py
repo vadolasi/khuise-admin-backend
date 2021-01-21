@@ -14,8 +14,7 @@ class ProductForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.helper.form_tag = True
-        self.helper.form_class = 'form-horizontal'
+        self.helper.form_tag = False
         self.helper.label_class = 'col-md-3 create-label'
         self.helper.field_class = 'col-md-9'
         self.helper.layout = Layout(

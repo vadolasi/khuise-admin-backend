@@ -5,52 +5,32 @@
 
 {% block content %}
 br
-br
 
-
-
-
-div#id_name__icontains.form-group.text-left(style="width: 10%; position: fixed; left: 3%;")
+div.form-group.text-left(style="width: 20%; position: fixed; left: 3%;")
     form(action='' method='get')
-            .row
-                h3 Pesquisar... 
-                i.fas.fa-search.text-right(style="cursor: auto")
+        .row
+            h3 Pesquisar...
+            i.fas.fa-search.text-right(style="cursor: auto")
 
-            br
+        br
 
-            .row
-                label(for="id_name__icontains") Nome
-                input#id_name__icontains.textinput.textInput.form-control(type='text' name='name__icontains')
+        {{ filter.form|crispy }}
 
-            .row
-                label(for="id_price__lt") Preço Menor Que
-                input#id_price__lt.numberinput.form-control(type='number' name='price__lt' step='any')
+        br
 
-            .row
-                label(for="id_price__gt") Preço Maior Que
-                input#id_price__gt.numberinput.form-control(type='number' name='price__gt' step='any')
+        .row
+            .col-sm-4
+                input.btn.btn-info(type='submit' value='Buscar')
+            .col-sm-4
+                a.btn.btn-success(href="{% url 'products-list' %}") Limpar
 
-            .row
-                label(for="id_categories") Categoria
-                input#id_categories.textinput.textInput.form-control(type='text' name='categories')
+div(style="margin-left: 23%")
 
-            br
-
-            .row
-                input.btn.btn-info(type='submit' value="Buscar")
-
-div(style="padding-left: 10%; padding-right: 10%;")
-
-    div.row
-        div.col-sm
-            h1 Lista De produtos
-
-    a.btn.btn-primary(href="{% url 'product-create'%}") Adicionar
-
-    br
-    br
-
-    <!--Messages-->
+    .row
+        .col-md-10
+            h1 Lista de produtos
+        .col-sm
+            a.btn.btn-primary(href="{% url 'product-create'%}") Adicionar
 
     {% if messages %}
 
@@ -62,19 +42,14 @@ div(style="padding-left: 10%; padding-right: 10%;")
 
     {% endif %}
 
-    br
-    br
-
-
-
     <!--Lista De produtos-->
-    div.row#infinite-container
+    div.row.mt-5#infinite-container
 
         {% for product in filter.qs %}
-        div.col-sm-3
+        div.col-sm-4
             a(href="{% url 'product-detail' pk=product.id %}" style="text-decoration: none; color: black;")
                 div.card
-                    img.card-img-top(src="{{ product.imagem }}" alt="Imagem do produto")
+                    img.card-img-top(src="{{ product.images.all.first.image.url }}" alt="Imagem do produto")
                     div.card-body
                         h5.card-title {{ product.name }}
                         p.card-text R${{ product.price }}

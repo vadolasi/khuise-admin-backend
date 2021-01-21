@@ -13,7 +13,7 @@ class ProductListView(FilterView):
     model = models.Product
     template_name = 'products/products_list.pug'
     context_object_name = 'products'
-    paginate_by = 5
+    paginate_by = 15
     filterset_class = filters.ProductFilter
 
 

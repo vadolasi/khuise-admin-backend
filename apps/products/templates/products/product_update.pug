@@ -1,24 +1,14 @@
 {% extends "base.pug" %}
-{% block title %}Editar produto{% endblock %}
+{% block title %}Editar produto "{{ object.name }}"{% endblock %}
 
 {% load crispy_forms_tags %}
 
 {% block content %}
 
-br
-br
+h1 Editar produto "{{ object.name }}"
 
-div.row
-    div.col-sm
-        h1 Editar produto
-
-div.row
-
-    form(method="POST" enctype="multipart/form-data")
-
-        {% csrf_token %}
-
-        {% crispy form %}
+form(method="POST" enctype="multipart/form-data")
+    {% crispy form %}
 
 
 {% endblock %}
