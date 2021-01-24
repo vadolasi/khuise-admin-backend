@@ -11,7 +11,7 @@ div.form-group.text-left.bg-light(style="width: 20%; position: fixed; padding: 2
 
         h3 Pesquisar...
         button(style="border: none; background: none;")
-            i.fas.fa-search.text-right#search-btn(style="cursor: pointer; position: absolute; right: 5px;")
+            i.fas.fa-search.text-right#search-btn(style="cursor: pointer; position: absolute; right: 25px; top: 26px;")
 
         br
 
@@ -43,7 +43,7 @@ div(style="margin-left: 23%")
         .col-md-10
             h1 Lista de produtos
         .col-sm
-            a.btn.btn-primary(href="{% url 'product-create'%}") Adicionar
+            a.btn.btn-success(href="{% url 'product-create'%}") Adicionar
 
     {% if messages %}
 
