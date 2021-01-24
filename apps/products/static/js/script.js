@@ -11,3 +11,20 @@ $(document).ready(function(){
 
 })
 
+
+function dropdown_prices(){
+
+    var dropdown_content = document.getElementById('precos-fields');
+
+    if(dropdown_content.style.display == 'none'){
+
+        dropdown_content.style.display = 'flex';
+
+    }
+    else{
+
+        dropdown_content.style.display = 'none';
+
+    }
+
+}

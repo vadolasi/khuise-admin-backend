@@ -66,3 +66,32 @@ ul.messages li{
     height: 15vw;
     object-fit: cover;
 }
+
+/*Campos de pesquisa*/
+.precos-dropdown{
+
+    width: 100%;
+    cursor: pointer; 
+    width: 100%; 
+    background-color: rgb(238, 238, 238);
+    border-radius: 8px;
+    padding: 10px;
+
+}
+
+.precos-dropdown .fa-arrow-down{
+
+    position: absolute;
+    right: 30px;
+    margin-top: 3px;
+
+}
+
+#precos-fields{
+
+    display: none;
+    background-color: rgb(240, 240, 240);
+    margin-top: -5px;
+    border-radius: 8px;
+
+}

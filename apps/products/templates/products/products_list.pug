@@ -6,23 +6,36 @@
 {% block content %}
 br
 
-div.form-group.text-left(style="width: 20%; position: fixed; left: 3%;")
+div.form-group.text-left.bg-light(style="width: 20%; position: fixed; padding: 20px; left: 0; top: 50px; height: 100%;")
     form(action='' method='get')
-        .row
-            h3 Pesquisar...
-            i.fas.fa-search.text-right(style="cursor: auto")
+
+        h3 Pesquisar...
+        button(style="border: none; background: none;")
+            i.fas.fa-search.text-right#search-btn(style="cursor: pointer; position: absolute; right: 5px;")
 
         br
 
-        {{ filter.form|crispy }}
+        {{filter.form.name__icontains|as_crispy_field}}
 
+        {{filter.form.categories|as_crispy_field}}
+
+
+        .precos-dropdown(onclick="dropdown_prices()") Preço
+            i.fas.fa-arrow-down
+        #precos-fields
+            div(style="padding: 5px;")
+                {{filter.form.price__gt|as_crispy_field}}
+            div(style="padding: 5px;")
+                {{filter.form.price__lt|as_crispy_field}}    
+
+        br
         br
 
         .row
-            .col-sm-4
-                input.btn.btn-info(type='submit' value='Buscar')
-            .col-sm-4
-                a.btn.btn-success(href="{% url 'products-list' %}") Limpar
+            .col-sm-3
+                input.btn.btn-info#search-form(type='submit' value='Buscar')
+            .col-sm-3
+                a.btn.btn-warning(href="{% url 'products-list' %}") Limpar
 
 div(style="margin-left: 23%")
 
