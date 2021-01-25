@@ -6,5 +6,6 @@ from apps.products import types
 
 
 class Query(graphene.ObjectType):
-    product = relay.Node.Field(types.ListTypeNode)
-    products = DjangoFilterConnectionField(types.ListTypeNode)
+    product = relay.Node.Field(types.ProductNode)
+    products = DjangoFilterConnectionField(types.ProductNode)
+
