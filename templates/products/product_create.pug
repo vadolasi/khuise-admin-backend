@@ -1,0 +1,13 @@
+{% extends "products/base.pug" %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+block title
+  | Novo produto
+
+block content
+
+  h1 Adicionar Novo produto
+
+  {% crispy form form.helper %}
+
