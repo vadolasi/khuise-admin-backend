@@ -1,3 +1,6 @@
+from pathlib import Path
+import fnmatch
+
 from doit.tools import LongRunning, Interactive
 
 
@@ -26,3 +29,27 @@ def task_runserver():
             LongRunning('python manage.py runserver_plus 0.0.0.0:8000'),
         ],
     }
+
+
+def task_realese():
+    pug_files = []
+
+    for root, dirnames, filenames in os.walk(source):
+        for filename in fnmatch.filter(filenames, '*.pug'):
+            pug_files.append(Path(root, filename))
+
+    commands = []
+
+    for pug_file in pug_files:
+        html_file = pug_file.with_sufix('html')
+        command = f'pypugjs -c django {pug_file} {html_file}'
+
+        if str(pug_file.parent) == 'emails':
+            command += ' && mjml {html_file} -o {html_file}'
+
+        commands.append(command)
+
+    return {
+        'actions': commands,
+    }
+

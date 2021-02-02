@@ -10,7 +10,6 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 import os
-import platform
 from io import StringIO
 from pathlib import Path
 
@@ -56,7 +55,6 @@ INSTALLED_APPS = [
     'crispy_forms',
     'django_filters',
     'graphene_django',
-    'mjml',
     'apps.accounts',
     'apps.products',
 ]
@@ -84,16 +82,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-            ],
-            'loaders': [(
-                'pypugjs.ext.django.Loader',
-                (
-                    'django.template.loaders.filesystem.Loader',
-                    'django.template.loaders.app_directories.Loader',
-                ),
-            )],
-            'builtins': [
-                'pypugjs.ext.django.templatetags',
             ],
         },
     },
@@ -165,6 +153,7 @@ LOGIN_REDIRECT_URL = '/products'
 
 LOGOUT_REDIRECT_URL = '/accounts/login'
 
+MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / 'media'
 
 
@@ -185,9 +174,3 @@ task_queues = (
     )
 )
 
-
-if platform.system() == "Linux":
-    MJML_EXEC_CMD = str(BASE_DIR / 'node_modules' / '.bin' / 'mjml')
-
-else:
-    MJML_EXEC_CMD = str(BASE_DIR / 'node_modules' / '.bin' / 'mjml.cmd')

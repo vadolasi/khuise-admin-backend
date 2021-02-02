@@ -7,3 +7,4 @@ DEBUG = False
 ALLOWED_HOSTS.append('')
 
 django_heroku.settings(locals())
+
