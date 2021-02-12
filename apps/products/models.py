@@ -1,42 +1,62 @@
-from django.contrib.postgres.fields import ArrayField
-from django.db import models
+from django.conf import settings
+from django.utils import timezone
+from djongo import models
+from djongo.storage import GridFSStorage
+
+# grid_fs_storage = GridFSStorage(collection='products_files')
 
 
 class Product(models.Model):
     name = models.CharField('nome', max_length=255)
     price = models.FloatField('preço')
     description = models.TextField('descrição')
-
-    categories = ArrayField(
-        models.CharField(
-            max_length=255,
-        ), verbose_name='categorias',
-    )
+    realese_date = models.DateTimeField(default=timezone.now)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'produto'
+        verbose_name_plural = 'produtos'
+        # app_label = 'products'
 
     def __str__(self):
         return self.name
 
 
-class ProductImage(models.Model):
+class Image(models.Model):
     product = models.ForeignKey(
-        'Product',
+        Product,
         on_delete=models.CASCADE,
         verbose_name='produto',
-        related_name='images'
+        related_name='images',
     )
-    image = models.ImageField()
+    image = models.ImageField()  # storage=grid_fs_storage)
+
+    class Meta:
+        verbose_name = 'imagem'
+        verbose_name_plural = 'imagens'
+        # app_label = 'products'
 
 
-class ProductStock(models.Model):
+class Stock(models.Model):
     product = models.ForeignKey(
-        'Product',
+        Product,
         on_delete=models.CASCADE,
         verbose_name='produto',
-        related_name='stocks'
+        related_name='stock',
     )
     color = models.CharField('cor', max_length=30)
     size = models.CharField('tamanho', max_length=2)
     stock = models.IntegerField('estoque')
+
+    class Meta:
+        verbose_name = 'estoque'
+        verbose_name_plural = 'estoque'
+        # app_label = 'products'
+
+
+class Category(models.Model):
+    products = models.ManyToManyField(Product)
+    name = models.CharField('nome', max_length=30)
+

@@ -12,15 +12,17 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 import os
 from io import StringIO
 from pathlib import Path
+from datetime import timedelta
 
 import environ
 from kombu import Exchange, Queue
 
 # Build paths inside the project like this: BASE_DIR / "subdir".
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
+SRC_DIR = BASE_DIR / 'src'
 
 env = environ.Env()
-env_file = BASE_DIR / 'src' / 'settings' / '.env'
+env_file = SRC_DIR / 'settings' / '.env'
 
 if env_file.exists():
     environ.Env.read_env(str(env_file))
@@ -31,6 +33,8 @@ else:
         env = f'{env_content}{env_var}={env_var_content}\n'
 
     environ.Env.read_env(StringIO(env_content))
+
+BASE_URL = env("BASE_URL")
 
 
 # Quick-start development settings - unsuitable for production
@@ -45,16 +49,16 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
-    'crispy_forms',
     'django_filters',
     'graphene_django',
+    'graphql_auth',
+    'graphql_jwt.refresh_token.apps.RefreshTokenConfig',
+    'rest_framework',
     'apps.accounts',
     'apps.products',
 ]
@@ -64,10 +68,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
 ROOT_URLCONF = 'src.urls'
@@ -76,15 +77,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [BASE_DIR / 'templates'],
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-            ],
-        },
-    },
+    }
 ]
 
 WSGI_APPLICATION = 'src.wsgi.application'
@@ -93,7 +86,22 @@ WSGI_APPLICATION = 'src.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-DATABASES = {'default': env.db()}
+DATABASES = {
+    'default': env.db(),
+    # 'products': {
+    #     'ENGINE': 'djongo',
+    #     'NAME': 'products',
+    #     'CLIENT': {
+    #         'name': env('MONGO_DATABASE'),
+    #         'host': env('MONGO_HOST'),
+    #         'username': env('MONGO_USER'),
+    #         'password': env('MONGO_PASSWORD'),
+    #         'authMechanism': 'SCRAM-SHA-1',
+    #     },
+    # },
+}
+
+# DATABASE_ROUTERS = ['src.database_routers.Router']
 
 
 # Password validation
@@ -123,9 +131,50 @@ PASSWORD_HASHERS = [
 
 AUTH_USER_MODEL = 'accounts.User'
 
+AUTHENTICATION_BACKENDS = [
+    'graphql_auth.backends.GraphQLAuthBackend',
+    'django.contrib.auth.backends.ModelBackend'
+]
+
+
 # * GraphQl
 
-GRAPHENE = {'SCHEMA': 'src.schema.schema'}
+GRAPHENE = {
+    'SCHEMA': 'src.schema.schema',
+    'MIDDLEWARE': [
+        'graphql_jwt.middleware.JSONWebTokenMiddleware',
+    ],
+}
+
+GRAPHQL_JWT = {
+    'JWT_VERIFY_EXPIRATION': True,
+    'JWT_LONG_RUNNING_REFRESH_TOKEN': True,
+    'JWT_EXPIRATION_DELTA': timedelta(minutes=5),
+    'JWT_REFRESH_EXPIRATION_DELTA': timedelta(days=7),
+    'JWT_ALLOW_ANY_CLASSES': [
+        'graphql_auth.relay.Register',
+        'graphql_auth.relay.SendPasswordResetEmail',
+        'graphql_auth.relay.PasswordReset',
+        'graphql_auth.relay.ObtainJSONWebToken',
+        'graphql_auth.relay.VerifyToken',
+        'graphql_auth.relay.RefreshToken',
+        'graphql_auth.relay.RevokeToken',
+    ],
+}
+
+GRAPHQL_AUTH = {
+    'REGISTER_MUTATION_FIELDS': ['email', 'first_name', 'last_name'],
+    'SEND_ACTIVATION_EMAIL': False,
+    'LOGIN_ALLOWED_FIELDS': ['email'],
+    'USER_NODE_FILTER_FIELDS': {
+        'email': ['exact'],
+        'is_active': ['exact'],
+        'status__archived': ['exact'],
+        'status__verified': ['exact'],
+        'status__secondary_email': ['exact'],
+    },
+    'EMAIL_ASYNC_TASK': 'src.tasks.graphql_auth_async_email',
+}
 
 
 # Internationalization
@@ -145,16 +194,35 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_URL = '/static/'
+AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3-sa-east-1.amazonaws.com'
 
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
+AWS_S3_FILE_OVERWRITE = False
 
-LOGIN_REDIRECT_URL = '/products'
+STATICFILES_LOCATION = 'static'
+MEDIAFILES_LOCATION = 'media'
 
-LOGOUT_REDIRECT_URL = '/accounts/login'
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
 
-MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / 'media'
+AWS_LOCATION = 'static'
+
+STATICFILES_STORAGE = 'src.storage_backends.StaticStorage'
+DEFAULT_FILE_STORAGE = 'src.storage_backends.MediaStorage'
+
+STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{STATICFILES_LOCATION}/'
+MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{MEDIAFILES_LOCATION}/'
+
+# UPLOADED_FILES_USE_URL = True
+
+
+#* Email
+
+EMAIL_CONFIG = env.email_url()
+vars().update(EMAIL_CONFIG)
 
 
 # * CORS

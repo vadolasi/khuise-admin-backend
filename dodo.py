@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 import fnmatch
 
@@ -34,14 +35,14 @@ def task_runserver():
 def task_realese():
     pug_files = []
 
-    for root, dirnames, filenames in os.walk(source):
+    for root, dirnames, filenames in os.walk('templates'):
         for filename in fnmatch.filter(filenames, '*.pug'):
             pug_files.append(Path(root, filename))
 
     commands = []
 
     for pug_file in pug_files:
-        html_file = pug_file.with_sufix('html')
+        html_file = pug_file.parent / (pug_file.name + '.html')
         command = f'pypugjs -c django {pug_file} {html_file}'
 
         if str(pug_file.parent) == 'emails':

@@ -16,5 +16,9 @@ media/
 .doit.db.dir
 .doit.db.bak
 
-# NPM dependencies
+# NODE dependencies
 node_modules/
+
+# Yarn
+yarn-error.log
+

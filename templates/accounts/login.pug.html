@@ -1,0 +1,21 @@
+{% extends "accounts/base.pug" %}
+{% block title %}Login{% endblock %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<div class="row">
+  <div class="col-sm-4 offset-sm-4">
+    <div class="card auth-card">
+      <div class="card-body">
+        <div class="card-title text-center"><img style="width: 150px; height: 120px;" src="{% static 'imgs/logo1.png' %}"/>
+        </div>
+        <form method="POST">{% csrf_token %}
+
+          <input type="hidden" name="next" value="{{ next }}"/>{{ form|crispy }}
+
+          <button type="submit" class="btn btn-primary btn-block">Entrar</button><br/>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>{% endblock %}
