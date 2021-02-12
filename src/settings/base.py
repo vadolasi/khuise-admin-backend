@@ -30,7 +30,7 @@ else:
     env_content = ''
 
     for env_var, env_var_content in os.environ.items():
-        env = f'{env_content}{env_var}={env_var_content}\n'
+        env_content = f'{env_content}{env_var}={env_var_content}\n'
 
     environ.Env.read_env(StringIO(env_content))
 
