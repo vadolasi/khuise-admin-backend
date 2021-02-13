@@ -68,6 +68,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
 ]
 
@@ -151,6 +152,7 @@ GRAPHQL_JWT = {
     'JWT_LONG_RUNNING_REFRESH_TOKEN': True,
     'JWT_EXPIRATION_DELTA': timedelta(minutes=5),
     'JWT_REFRESH_EXPIRATION_DELTA': timedelta(days=7),
+    # 'JWT_AUTH_HEADER_PREFIX': 'Bearer',
     'JWT_ALLOW_ANY_CLASSES': [
         'graphql_auth.relay.Register',
         'graphql_auth.relay.SendPasswordResetEmail',
@@ -207,8 +209,6 @@ MEDIAFILES_LOCATION = 'media'
 AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',
 }
-
-AWS_LOCATION = 'static'
 
 STATICFILES_STORAGE = 'src.storage_backends.StaticStorage'
 DEFAULT_FILE_STORAGE = 'src.storage_backends.MediaStorage'
