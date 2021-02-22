@@ -42,10 +42,10 @@ def task_realese():
     commands = []
 
     for pug_file in pug_files:
-        html_file = pug_file.parent / (pug_file.name + '.html')
+        html_file = pug_file.parent / (pug_file.stem + '.html')
         command = f'pypugjs -c django {pug_file} {html_file}'
 
-        if str(pug_file.parent) == 'emails':
+        if str(pug_file.parent) == 'email':
             command += ' && mjml {html_file} -o {html_file}'
 
         commands.append(command)

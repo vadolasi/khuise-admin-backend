@@ -180,7 +180,7 @@ zstd = ["zstandard"]
 name = "certifi"
 version = "2020.12.5"
 description = "Python package for providing Mozilla's CA Bundle."
-category = "main"
+category = "dev"
 optional = false
 python-versions = "*"
 
@@ -199,7 +199,7 @@ pycparser = "*"
 name = "chardet"
 version = "4.0.0"
 description = "Universal encoding detector for Python 2 and 3"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
@@ -338,14 +338,6 @@ python-versions = ">=3.6"
 Django = ">=2.2"
 
 [[package]]
-name = "django-crispy-forms"
-version = "1.11.0"
-description = "Best way to have Django DRY forms"
-category = "main"
-optional = false
-python-versions = ">=3.5"
-
-[[package]]
 name = "django-debug-toolbar"
 version = "3.2"
 description = "A configurable set of panels that display various debug information about the current request/response."
@@ -447,29 +439,15 @@ whitenoise = "*"
 name = "django-mjml"
 version = "0.10.2"
 description = "Use MJML in Django templates"
-category = "main"
+category = "dev"
 optional = false
 python-versions = "*"
 
 [package.dependencies]
 django = ">=1.8,<3.2"
-requests = {version = ">=2.20", optional = true, markers = "python_version >= \"3.0\" and extra == \"requests\""}
 
 [package.extras]
 requests = ["requests[security] (>=2.20)", "requests (>=2.20)"]
-
-[[package]]
-name = "django-model-mutations"
-version = "0.1.1"
-description = "Graphene Django mutations for Django models made easier"
-category = "main"
-optional = false
-python-versions = "*"
-
-[package.dependencies]
-django = "*"
-graphene = "*"
-graphene-django = "*"
 
 [[package]]
 name = "django-redis"
@@ -482,6 +460,17 @@ python-versions = ">=3.5"
 [package.dependencies]
 Django = ">=2.2"
 redis = ">=3.0.0"
+
+[[package]]
+name = "django-render-block"
+version = "0.8.1"
+description = "Render a particular block from a template to a string."
+category = "main"
+optional = false
+python-versions = ">=3.5"
+
+[package.dependencies]
+django = ">=2.2"
 
 [[package]]
 name = "django-rest-framework"
@@ -512,6 +501,18 @@ dropbox = ["dropbox (>=7.2.1)"]
 google = ["google-cloud-storage (>=1.15.0)"]
 libcloud = ["apache-libcloud"]
 sftp = ["paramiko"]
+
+[[package]]
+name = "django-templated-email"
+version = "2.3.0"
+description = "A Django oriented templated / transaction email abstraction"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+django-render-block = ">=0.5"
+six = ">=1"
 
 [[package]]
 name = "djangorestframework"
@@ -638,6 +639,35 @@ rest_framework = ["djangorestframework (>=3.6.3)"]
 test = ["pytest (>=3.6.3)", "pytest-cov", "coveralls", "mock", "pytz", "pytest-django (>=3.3.2)", "djangorestframework (>=3.6.3)", "django-filter (<2)", "django-filter (>=2)"]
 
 [[package]]
+name = "graphene-django-cud"
+version = "0.7.2"
+description = "Create, update and delete mutations for graphene-django"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+graphene-django = ">=2.0"
+graphene-file-upload = ">=1.2"
+
+[[package]]
+name = "graphene-file-upload"
+version = "1.3.0"
+description = "Lib for adding file upload functionality to GraphQL mutations in Graphene Django and Flask-Graphql"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+six = ">=1.11.0"
+
+[package.extras]
+all = ["Flask (>=1.0.2)", "graphene (>=2.1.2)", "Flask-Graphql (>=2.0.0)", "graphene-django (>=2.0.0)"]
+django = ["graphene-django (>=2.0.0)"]
+flask = ["Flask (>=1.0.2)", "graphene (>=2.1.2)", "Flask-Graphql (>=2.0.0)"]
+tests = ["coverage", "pytest", "pytest-cov", "pytest-django"]
+
+[[package]]
 name = "graphql-core"
 version = "2.3.2"
 description = "GraphQL implementation for Python"
@@ -682,10 +712,18 @@ setproctitle = ["setproctitle"]
 tornado = ["tornado (>=0.2)"]
 
 [[package]]
+name = "html2text"
+version = "2020.1.16"
+description = "Turn HTML into equivalent Markdown-structured text."
+category = "main"
+optional = false
+python-versions = ">=3.5"
+
+[[package]]
 name = "idna"
 version = "2.10"
 description = "Internationalized Domain Names in Applications (IDNA)"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
@@ -908,7 +946,7 @@ python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
 name = "pypugjs"
 version = "5.9.8"
 description = "PugJS syntax template adapter for Django, Jinja2, Mako and Tornado templates"
-category = "main"
+category = "dev"
 optional = false
 python-versions = "*"
 
@@ -972,7 +1010,7 @@ hiredis = ["hiredis (>=0.1.3)"]
 name = "requests"
 version = "2.25.1"
 description = "Python HTTP for Humans."
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
@@ -1168,7 +1206,7 @@ brotli = ["brotli"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9.1"
-content-hash = "590bc39d2d236c3894c0fbb3de502f7c6ca05d057d91b4e6f8c7223ddce99ff2"
+content-hash = "d2815626c2c3df052b8ac6f9f110e30031c884f8b31dec045a418d64ba184da5"
 
 [metadata.files]
 add-trailing-comma = [
@@ -1328,10 +1366,6 @@ django-cors-headers = [
     {file = "django-cors-headers-3.7.0.tar.gz", hash = "sha256:96069c4aaacace786a34ee7894ff680780ec2644e4268b31181044410fecd12e"},
     {file = "django_cors_headers-3.7.0-py3-none-any.whl", hash = "sha256:1ac2b1213de75a251e2ba04448da15f99bcfcbe164288ae6b5ff929dc49b372f"},
 ]
-django-crispy-forms = [
-    {file = "django-crispy-forms-1.11.0.tar.gz", hash = "sha256:21cf717b621f93cdf01bac0a419b520fe3b17bffd67e140b6c16558d9b75ab80"},
-    {file = "django_crispy_forms-1.11.0-py3-none-any.whl", hash = "sha256:a2aa34ee3fccafdebb33c016cbd60246b37df85dae717637c6419b929fa24b25"},
-]
 django-debug-toolbar = [
     {file = "django-debug-toolbar-3.2.tar.gz", hash = "sha256:84e2607d900dbd571df0a2acf380b47c088efb787dce9805aefeb407341961d2"},
     {file = "django_debug_toolbar-3.2-py3-none-any.whl", hash = "sha256:9e5a25d0c965f7e686f6a8ba23613ca9ca30184daa26487706d4829f5cfb697a"},
@@ -1368,12 +1402,13 @@ django-mjml = [
     {file = "django-mjml-0.10.2.tar.gz", hash = "sha256:1e24dde52d1d35c913d58e5e20b73c99186fbf24d8087834545eb3a98a9dd5b3"},
     {file = "django_mjml-0.10.2-py2.py3-none-any.whl", hash = "sha256:dc1034977c6e33e928766f26f897f5213ffe605e84b71c71f841927528374218"},
 ]
-django-model-mutations = [
-    {file = "django-model-mutations-0.1.1.tar.gz", hash = "sha256:6d19ab7045750374140e547f77b157e6c62d1310d59e5f1fd041ac7705982e2d"},
-]
 django-redis = [
     {file = "django-redis-4.12.1.tar.gz", hash = "sha256:306589c7021e6468b2656edc89f62b8ba67e8d5a1c8877e2688042263daa7a63"},
     {file = "django_redis-4.12.1-py3-none-any.whl", hash = "sha256:1133b26b75baa3664164c3f44b9d5d133d1b8de45d94d79f38d1adc5b1d502e5"},
+]
+django-render-block = [
+    {file = "django-render-block-0.8.1.tar.gz", hash = "sha256:edbc5d444cc50f3eb3387cf17f6f1014bf19d6018f680861cdeae9e0306003fa"},
+    {file = "django_render_block-0.8.1-py3-none-any.whl", hash = "sha256:903969efd0949f750c5fe71affe6e6b1ea66d03005c102a67fda36d5b9f4e1e1"},
 ]
 django-rest-framework = [
     {file = "django-rest-framework-0.1.0.tar.gz", hash = "sha256:47a8f496fa69e3b6bd79f68dd7a1527d907d6b77f009e9db7cf9bb21cc565e4a"},
@@ -1381,6 +1416,9 @@ django-rest-framework = [
 django-storages = [
     {file = "django-storages-1.11.1.tar.gz", hash = "sha256:c823dbf56c9e35b0999a13d7e05062b837bae36c518a40255d522fbe3750fbb4"},
     {file = "django_storages-1.11.1-py3-none-any.whl", hash = "sha256:f28765826d507a0309cfaa849bd084894bc71d81bf0d09479168d44785396f80"},
+]
+django-templated-email = [
+    {file = "django-templated-email-2.3.0.tar.gz", hash = "sha256:536c4e5ae099eabfb9aab36087d4d7799948c654e73da55a744213d086d5bb33"},
 ]
 djangorestframework = [
     {file = "djangorestframework-3.12.2-py3-none-any.whl", hash = "sha256:0209bafcb7b5010fdfec784034f059d512256424de2a0f084cb82b096d6dd6a7"},
@@ -1412,6 +1450,14 @@ graphene-django = [
     {file = "graphene-django-2.15.0.tar.gz", hash = "sha256:b78c9b05bc899016b9cc5bf13faa1f37fe1faa8c5407552c6ddd1a28f46fc31a"},
     {file = "graphene_django-2.15.0-py2.py3-none-any.whl", hash = "sha256:02671d195f0c09c8649acff2a8f4ad4f297d0f7d98ea6e6cdf034b81bab92880"},
 ]
+graphene-django-cud = [
+    {file = "graphene-django-cud-0.7.2.tar.gz", hash = "sha256:4de835cdf492db1a862db560e36ee4c24f48e0b0e53a956fefbc7ad49127a849"},
+    {file = "graphene_django_cud-0.7.2-py3-none-any.whl", hash = "sha256:7c04ae8c592f08e911907b9d73c748161129a87c1285a3bdc2680d1511aba16b"},
+]
+graphene-file-upload = [
+    {file = "graphene_file_upload-1.3.0-py3-none-any.whl", hash = "sha256:5afe50f409f50e3d198fd92c883d98d868e6c6aaadf5df3a3f4d88ecad90ed97"},
+    {file = "graphene_file_upload-1.3.0.tar.gz", hash = "sha256:6898480b0556826472c80971032917c01968ade5800d84054008fe598795b063"},
+]
 graphql-core = [
     {file = "graphql-core-2.3.2.tar.gz", hash = "sha256:aac46a9ac524c9855910c14c48fc5d60474def7f99fd10245e76608eba7af746"},
     {file = "graphql_core-2.3.2-py2.py3-none-any.whl", hash = "sha256:44c9bac4514e5e30c5a595fac8e3c76c1975cae14db215e8174c7fe995825bad"},
@@ -1423,6 +1469,10 @@ graphql-relay = [
 gunicorn = [
     {file = "gunicorn-20.0.4-py2.py3-none-any.whl", hash = "sha256:cd4a810dd51bf497552cf3f863b575dabd73d6ad6a91075b65936b151cbf4f9c"},
     {file = "gunicorn-20.0.4.tar.gz", hash = "sha256:1904bb2b8a43658807108d59c3f3d56c2b6121a701161de0ddf9ad140073c626"},
+]
+html2text = [
+    {file = "html2text-2020.1.16-py3-none-any.whl", hash = "sha256:c7c629882da0cf377d66f073329ccf34a12ed2adf0169b9285ae4e63ef54c82b"},
+    {file = "html2text-2020.1.16.tar.gz", hash = "sha256:e296318e16b059ddb97f7a8a1d6a5c1d7af4544049a01e261731d2d5cc277bbb"},
 ]
 idna = [
     {file = "idna-2.10-py2.py3-none-any.whl", hash = "sha256:b97d804b1e9b523befed77c48dacec60e6dcb0b5391d57af6a65a312a90648c0"},

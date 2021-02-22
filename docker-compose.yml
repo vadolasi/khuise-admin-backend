@@ -1,0 +1,51 @@
+version: "3.9"
+
+services:
+
+  postgres:
+    image: "postgres:latest"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+
+  redis:
+    image: "redis:latest"
+    command: redis-server --requirepass redis1234
+    ports:
+      - "6379:6379"
+
+  rabbitmq:
+    image: "rabbitmq:latest"
+    ports:
+      - "8080:15672"
+    network_mode: "bridge"
+    environment:
+      - RABBITMQ_ERLANG_COOKIE=q1w2e3r4t5y6u7i8o9p0
+      - RABBITMQ_DEFAULT_USER=mqadmin
+      - RABBITMQ_DEFAULT_PASS=Admin123XX_
+      - CLUSTERED=true
+
+  mjml:
+    image: "liminspace/mjml-tcpserver:latest"
+    restart: always
+    ports:
+      - "28101:28101"
+
+  web:
+    build: .
+    command: python -m poetry run python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - porstgres
+      - redis
+      - rabbitmq
+
+volumes:
+  postgres_data:
+

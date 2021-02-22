@@ -4,7 +4,7 @@ from src.settings.base import *
 
 DEBUG = True
 
-ALLOWED_HOSTS.extend(['localhost', '0.0.0.0', '192.168.0.3'])
+ALLOWED_HOSTS.append('*')
 
 INSTALLED_APPS.extend(['django.contrib.admin', 'django.contrib.messages', 'django_extensions', 'debug_toolbar', 'mjml'])
 
@@ -29,4 +29,9 @@ MIDDLEWARE.insert(1, 'debug_toolbar.middleware.DebugToolbarMiddleware')
 MIDDLEWARE.insert(4, 'django.contrib.messages.middleware.MessageMiddleware')
 
 INTERNAL_IPS = ['127.0.0.1']
+
+MJML_BACKEND_MODE = 'tcpserver'
+MJML_TCPSERVERS = [
+    ('127.0.0.1', 28101),
+]
 

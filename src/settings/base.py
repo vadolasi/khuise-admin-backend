@@ -152,15 +152,12 @@ GRAPHQL_JWT = {
     'JWT_LONG_RUNNING_REFRESH_TOKEN': True,
     'JWT_EXPIRATION_DELTA': timedelta(minutes=5),
     'JWT_REFRESH_EXPIRATION_DELTA': timedelta(days=7),
-    # 'JWT_AUTH_HEADER_PREFIX': 'Bearer',
     'JWT_ALLOW_ANY_CLASSES': [
         'graphql_auth.relay.Register',
         'graphql_auth.relay.SendPasswordResetEmail',
         'graphql_auth.relay.PasswordReset',
         'graphql_auth.relay.ObtainJSONWebToken',
-        'graphql_auth.relay.VerifyToken',
-        'graphql_auth.relay.RefreshToken',
-        'graphql_auth.relay.RevokeToken',
+        'graphql_auth.relay.VerifyToken', 
     ],
 }
 
@@ -223,6 +220,8 @@ MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{MEDIAFILES_LOCATION}/'
 
 EMAIL_CONFIG = env.email_url()
 vars().update(EMAIL_CONFIG)
+
+TEMPLATED_EMAIL_BACKEND = 'templated_email.backends.vanilla_django.TemplateBackend'
 
 
 # * CORS

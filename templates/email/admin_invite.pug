@@ -1,0 +1,18 @@
+{% load mjml %}
+
+block mjml
+  mjml
+    mj-body
+      mj-section
+        mj-column
+          mj-image(width="100px" src="")
+
+          mj-divider
+
+          mj-text(font-size="20px" color="#F45E43")
+            | Olá, você foi convidado pora fazer paste da administração do e-commerce da Khuise. Para prosseguir, clique no botão abaixo:
+
+          mj-button(mj-button font-size="23px" background-color="#F45E43" href="https://khuise-shop-.heroku.app/account/register/{{ code }}") Confirmar
+
+          mj-text(font-size="20px" color="#F45E43") OBS: Este convite é valido até 24 depois do envio.
+

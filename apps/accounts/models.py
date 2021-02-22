@@ -1,3 +1,5 @@
+import uuid
+
 from django.contrib.auth.models import (
     AbstractUser,
     BaseUserManager,
@@ -5,6 +7,8 @@ from django.contrib.auth.models import (
 )
 from django.db import models
 from django.utils import timezone
+
+from src.tasks import send_email_from_template
 
 
 class UserManager(BaseUserManager):
@@ -97,3 +101,28 @@ class User(AbstractUser, PermissionsMixin):
     USERNAME_FIELD = 'email'
     EMAIL_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name']
+
+
+class Invite(models.Model):
+    email = models.EmailField('endereço de email')
+    code = models.UUIDField('código', default=uuid.uuid4, editable=False)
+    send_date = models.DateTimeField('data do envio', auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'Convite'
+        verbose_name_plural = 'Convites'
+
+    def __str__(self):
+        return f'Enviado para {self.email} em {self.sent_date}'
+
+    def save(self):
+        send_email_from_template.delay(
+            template_name='email/admin_invite',
+            context={
+                'code': self.code
+            },
+            subject='Convite para a administração do e-commerce Khuise',
+            recipient_list=[self.email],
+        )
+        super(Invite, self).save(*args, **kwargs)
+

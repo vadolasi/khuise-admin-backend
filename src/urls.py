@@ -1,11 +1,11 @@
 from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path
-from graphene_django.views import GraphQLView
+from graphene_file_upload.django import FileUploadGraphQLView as GraphQLView
 from graphql_jwt.decorators import jwt_cookie
 
 urlpatterns = [
-    path('graphql/', GraphQLView.as_view(graphiql=True)),
+    path('graphql-web/', jwt_cookie(GraphQLView.as_view(graphiql=True))),
     path('graphql-mobile/', GraphQLView.as_view())
 ]
 
