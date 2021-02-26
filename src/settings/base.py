@@ -152,6 +152,7 @@ GRAPHQL_JWT = {
     'JWT_LONG_RUNNING_REFRESH_TOKEN': True,
     'JWT_EXPIRATION_DELTA': timedelta(minutes=5),
     'JWT_REFRESH_EXPIRATION_DELTA': timedelta(days=7),
+    'JWT_COOKIE_SAMESITE': 'None',
     'JWT_ALLOW_ANY_CLASSES': [
         'graphql_auth.relay.Register',
         'graphql_auth.relay.SendPasswordResetEmail',
@@ -226,7 +227,13 @@ TEMPLATED_EMAIL_BACKEND = 'templated_email.backends.vanilla_django.TemplateBacke
 
 # * CORS
 
-CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOWED_ORIGINS = [
+  "http://localhost:3000",
+  "http://192.168.0.2",
+  "https://a1f7bd701779.ngrok.io",
+  "http://a1f7bd701779.ngrok.io",
+]
+CORS_ALLOW_CREDENTIALS = True
 
 
 # * Celery

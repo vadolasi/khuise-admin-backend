@@ -1,9 +1,0 @@
-{
-  "name": "khuise_shop_backend",
-  "version": "1.0.0",
-  "private": true,
-
-  "dependencies": {
-    "mjml": "^4.8.1"
-  }
-}

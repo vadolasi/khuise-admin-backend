@@ -1,72 +1,85 @@
-from graphene_django_cud import DjangoCreateMutation as CreateMutation
-from graphene_django_cud import DjangoUpdateMutation as UpdateMutation
-from graphene_django_cud import DjangoDeleteMutation as DeleteMutation
-from graphene_djnago_cud import DjangoBatchCreateMutation as BulkCreateMutation
-from graphene_django_cud import DjangoBatchUpdateMutation as BulkUpdateMutation
-from graphene_django_cud import DjangoBatchDeleteMutation as BulkDeleteMutation
-from graphene_file_upload.scalars import Upload
+import graphene
+from graphene_django_cud import mutations
 
 from apps.products import models
 from apps.products.types import *
+from src.utils import base64_2image
 
 
-class ProductCreateMutation(CreateMutation):
+class ProductCreateMutation(mutations.DjangoCreateMutation):
+    class Meta:
+        model = models.Product 
+
+
+class ProductUpdateMutation(mutations.DjangoUpdateMutation):
+    class Meta:
+        model = models.Product
+        optional_fields = ('name', 'description', 'price')
+
+
+class ProductDeleteMutation(mutations.DjangoDeleteMutation):
     class Meta:
         model = models.Product
 
 
-class ProductUpdateMutation(UpdateMutation):
-    class Meta:
-        model = models.Product
-
-
-class ProductDeleteMutation(DeleteMutation):
-    class Meta:
-        model = models.Product
-
-
-class StockBulkCreateMutation(BulkCreateMutation):
+class StockBulkCreateMutation(mutations.DjangoBatchCreateMutation):
     class Meta:
         model = models.Stock
 
 
-class StockUpdateMutation(UpdateMutation):
+class StockUpdateMutation(mutations.DjangoUpdateMutation):
+    class Meta:
+        model = models.Stock
+        exclude_fields = ('product',)
+
+
+class StockDeleteMutation(mutations.DjangoDeleteMutation):
     class Meta:
         model = models.Stock
 
 
-class StockDeleteMutation(DeleteMutation):
-    class Meta:
-        model = models.Stock
-
-
-class ImageBulkCreateMutation(BulkCreateMutation):
+class ImageBulkCreateMutation(mutations.DjangoBatchCreateMutation):
     class Meta:
         model = models.Image
 
         field_types = {
-            "image": Upload(required=True)
+            "image": graphene.String(required=True)
         }
 
     @classmethod
-    def handle_image(cls, value, *args, **kwargs):
-        return value[0]
+    def before_mutate(cls, root, info, input):
+        input = [
+                type(input[0])({
+                'image': base64_2image(image['image']),
+                'product': image['product']
+            }) for image in input
+        ]
+
+        return input
 
 
-class ImageUpdateMutation(UpdateMutation):
+class ImageUpdateMutation(mutations.DjangoUpdateMutation):
     class Meta:
         model = models.Image
 
         field_types = {
-            "image": Upload(required=True)
+            "image": graphene.String(required=True)
         }
 
     @classmethod
-    def handle_image(cls, value, *args, **kwargs):
-        return value[0]
+    def before_mutate(cls, root, info, input):
+        input = [
+                type(input[0])({
+                'image': base64_2image(image['image']),
+                'product': image['product']
+            }) for image in input
+        ]
 
+        return input
 
-class ImageDeleteMutation(DeleteMutation):
+ 
+ 
+class ImageDeleteMutation(mutations.DjangoDeleteMutation):
     class Meta:
         model = models.Image
 

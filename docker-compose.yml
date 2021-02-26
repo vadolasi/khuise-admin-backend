@@ -11,23 +11,6 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
 
-  redis:
-    image: "redis:latest"
-    command: redis-server --requirepass redis1234
-    ports:
-      - "6379:6379"
-
-  rabbitmq:
-    image: "rabbitmq:latest"
-    ports:
-      - "8080:15672"
-    network_mode: "bridge"
-    environment:
-      - RABBITMQ_ERLANG_COOKIE=q1w2e3r4t5y6u7i8o9p0
-      - RABBITMQ_DEFAULT_USER=mqadmin
-      - RABBITMQ_DEFAULT_PASS=Admin123XX_
-      - CLUSTERED=true
-
   mjml:
     image: "liminspace/mjml-tcpserver:latest"
     restart: always
@@ -42,9 +25,7 @@ services:
     ports:
       - "8000:8000"
     depends_on:
-      - porstgres
-      - redis
-      - rabbitmq
+      - postgres
 
 volumes:
   postgres_data:

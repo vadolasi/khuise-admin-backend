@@ -8,8 +8,6 @@ from django.contrib.auth.models import (
 from django.db import models
 from django.utils import timezone
 
-from src.tasks import send_email_from_template
-
 
 class UserManager(BaseUserManager):
     def _create_user(
@@ -104,7 +102,13 @@ class User(AbstractUser, PermissionsMixin):
 
 
 class Invite(models.Model):
-    email = models.EmailField('endereço de email')
+    to_email = models.EmailField('endereço de email')
+    # by_user = models.ForeignKey(
+    #     User,
+    #     verbose_name="enviado por",
+    #     related_name="convites",
+    #     on_delete=models.CASCADE,
+    # )
     code = models.UUIDField('código', default=uuid.uuid4, editable=False)
     send_date = models.DateTimeField('data do envio', auto_now_add=True)
 
@@ -113,16 +117,5 @@ class Invite(models.Model):
         verbose_name_plural = 'Convites'
 
     def __str__(self):
-        return f'Enviado para {self.email} em {self.sent_date}'
-
-    def save(self):
-        send_email_from_template.delay(
-            template_name='email/admin_invite',
-            context={
-                'code': self.code
-            },
-            subject='Convite para a administração do e-commerce Khuise',
-            recipient_list=[self.email],
-        )
-        super(Invite, self).save(*args, **kwargs)
-
+        return f'Enviado por {self.from_user.first_name} {self.from_user.last_name} {self.email} em {self.sent_date}'
+ 
