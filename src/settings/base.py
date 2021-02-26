@@ -232,6 +232,7 @@ CORS_ALLOWED_ORIGINS = [
   "http://192.168.0.2",
   "https://a1f7bd701779.ngrok.io",
   "http://a1f7bd701779.ngrok.io",
+  "https://khuise-admin-frontend.vercel.app",
 ]
 CORS_ALLOW_CREDENTIALS = True
 
