@@ -200,7 +200,7 @@ USE_TZ = True
 AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
-AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3-sa-east-1.amazonaws.com'
+AWS_S3_CUSTOM_DOMAIN = f'dpkidwvuicjfi.cloudfront.net'
 
 AWS_S3_FILE_OVERWRITE = False
 
@@ -214,8 +214,8 @@ AWS_S3_OBJECT_PARAMETERS = {
 STATICFILES_STORAGE = 'src.storage_backends.StaticStorage'
 DEFAULT_FILE_STORAGE = 'src.storage_backends.MediaStorage'
 
-STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{STATICFILES_LOCATION}/'
-MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{MEDIAFILES_LOCATION}/'
+STATIC_URL = f'https://dpkidwvuicjfi.cloudfront.net/static/'
+MEDIA_URL = f'https://dpkidwvuicjfi.cloudfront.net/media/'
 
 # UPLOADED_FILES_USE_URL = True
 
