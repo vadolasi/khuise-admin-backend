@@ -38,6 +38,26 @@ class StockDeleteMutation(mutations.DjangoDeleteMutation):
         model = models.Stock
 
 
+class ImageCreateMutation(mutations.DjangoCreateMutation):
+    class Meta:
+        model = models.Image
+
+        field_types = {
+            "image": graphene.String(required=True)
+        }
+
+    @classmethod
+    def before_mutate(cls, root, info, input):
+        input = type(input)(
+            {
+                'image': base64_2image(input['image']),
+                'product': input['product']
+            }
+        )
+
+        return input
+
+
 class ImageBulkCreateMutation(mutations.DjangoBatchCreateMutation):
     class Meta:
         model = models.Image
@@ -68,18 +88,16 @@ class ImageUpdateMutation(mutations.DjangoUpdateMutation):
 
     @classmethod
     def before_mutate(cls, root, info, input):
-        input = [
-                type(input[0])({
-                'image': base64_2image(image['image']),
-                'product': image['product']
-            }) for image in input
-        ]
-
+        input = type(input)(
+            {
+                'image': base64_2image(input['image'], exists=True),
+                'product': input['product']
+            }
+        )
+ 
         return input
 
- 
  
 class ImageDeleteMutation(mutations.DjangoDeleteMutation):
     class Meta:
         model = models.Image
-

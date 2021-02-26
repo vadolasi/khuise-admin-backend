@@ -176,6 +176,9 @@ GRAPHQL_AUTH = {
     'EMAIL_ASYNC_TASK': 'src.tasks.graphql_auth_async_email',
 }
 
+SESSION_COOKIE_SAMESITE = None
+CSRF_COOKIE_SAMESITE = None
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
@@ -230,8 +233,7 @@ TEMPLATED_EMAIL_BACKEND = 'templated_email.backends.vanilla_django.TemplateBacke
 CORS_ALLOWED_ORIGINS = [
   "http://localhost:3000",
   "http://192.168.0.2",
-  "https://a1f7bd701779.ngrok.io",
-  "http://a1f7bd701779.ngrok.io",
+  "https://38240e0f67ed.ngrok.io",
   "https://khuise-admin-frontend.vercel.app",
 ]
 CORS_ALLOW_CREDENTIALS = True

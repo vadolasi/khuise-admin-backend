@@ -17,7 +17,7 @@ class Mutation(graphene.ObjectType):
     add_stock = mutations.StockBulkCreateMutation.Field()
     update_stock = mutations.StockUpdateMutation.Field()
     delete_stock = mutations.StockDeleteMutation.Field()
+    add_image = mutations.ImageCreateMutation.Field()
     add_images = mutations.ImageBulkCreateMutation.Field()
     update_image = mutations.ImageUpdateMutation.Field()
     delete_image = mutations.ImageDeleteMutation.Field()
-
